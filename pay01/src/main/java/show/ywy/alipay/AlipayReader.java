@@ -3,23 +3,24 @@ package show.ywy.alipay;
 import cn.hutool.core.lang.Console;
 import cn.idev.excel.context.AnalysisContext;
 import cn.idev.excel.event.AnalysisEventListener;
+import show.ywy.wechat.WeChatPayAccounting;
 
 import java.util.List;
 
 /**
  * @author yzs
  */
-public class AlipayReader extends AnalysisEventListener<AliPayAccounting> {
+public class AlipayReader extends AnalysisEventListener<WeChatPayAccounting> {
     private static final int BATCH_COUNT = 25;
 
-    public AlipayReader(List<AliPayAccounting> cachedDataList) {
+    public AlipayReader(List<WeChatPayAccounting> cachedDataList) {
         this.cachedDataList = cachedDataList;
     }
 
-    private final List<AliPayAccounting> cachedDataList;
+    private final List<WeChatPayAccounting> cachedDataList;
 
     @Override
-    public void invoke(AliPayAccounting data, AnalysisContext analysisContext) {
+    public void invoke(WeChatPayAccounting data, AnalysisContext analysisContext) {
         cachedDataList.add(data);
         if (cachedDataList.size() >= BATCH_COUNT) {
             saveData();

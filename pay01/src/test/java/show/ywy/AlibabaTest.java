@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import cn.idev.excel.EasyExcel;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.Test;
-import show.ywy.wechat.WechatPayAccounting;
+import show.ywy.alipay.AliPayAccounting;
 import show.ywy.wechat.WechatPayReader;
 
 import java.io.FileInputStream;
@@ -43,11 +43,11 @@ public class AlibabaTest {
         // 指定编码读取文档
         InputStreamReader reader = new InputStreamReader(new FileInputStream(pathname), "GBK");
         InputStream newInputStream = ReaderInputStream.builder().setCharset("UTF-8").setReader(reader).get();
-        List<WechatPayAccounting> cachedDataList = new ArrayList<>();
-        EasyExcel.read(newInputStream, WechatPayAccounting.class, new WechatPayReader(cachedDataList))
+        List<AliPayAccounting> cachedDataList = new ArrayList<>();
+        EasyExcel.read(newInputStream, AliPayAccounting.class, new WechatPayReader(cachedDataList))
                 .headRowNumber(5).numRows(21).doReadAll();
-        for (WechatPayAccounting wechatPayAccounting : cachedDataList) {
-            System.out.println(JSONUtil.toJsonPrettyStr(wechatPayAccounting));
+        for (AliPayAccounting aliPayAccounting : cachedDataList) {
+            System.out.println(JSONUtil.toJsonPrettyStr(aliPayAccounting));
         }
     }
 }

@@ -8,9 +8,9 @@ import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.Test;
-import show.ywy.alipay.AliPayAccounting;
+import show.ywy.wechat.WeChatPayAccounting;
 import show.ywy.template.AccountingData;
-import show.ywy.wechat.WechatPayAccounting;
+import show.ywy.alipay.AliPayAccounting;
 import show.ywy.wechat.WechatPayReader;
 
 import java.io.FileInputStream;
@@ -32,27 +32,28 @@ public class OutExcelTest {
         // 指定编码读取文档
         @Cleanup InputStreamReader reader = new InputStreamReader(new FileInputStream(pathname), "GBK");
         @Cleanup InputStream newInputStream = ReaderInputStream.builder().setCharset("UTF-8").setReader(reader).get();
-        List<WechatPayAccounting> cachedDataList = new ArrayList<>();
-        EasyExcel.read(newInputStream, WechatPayAccounting.class, new WechatPayReader(cachedDataList)).headRowNumber(5).numRows(21).doReadAll();
-        ArrayList<AliPayAccounting> cachedDataLis2t = new ArrayList<>();
-        FastExcel.read(pathNameVx, AliPayAccounting.class, new PageReadListener<AliPayAccounting>(cachedDataLis2t::addAll))
+        List<AliPayAccounting> cachedDataList = new ArrayList<>();
+        EasyExcel.read(newInputStream, AliPayAccounting.class, new WechatPayReader(cachedDataList)).headRowNumber(5).numRows(21).doReadAll();
+        ArrayList<WeChatPayAccounting> cachedDataLis2t = new ArrayList<>();
+        FastExcel.read(pathNameVx, WeChatPayAccounting.class, new PageReadListener<WeChatPayAccounting>(cachedDataLis2t::addAll))
                 .headRowNumber(17).sheet().doRead();
         List<AccountingData> result = new ArrayList<>();
 
-        for (WechatPayAccounting wechatPayAccounting : cachedDataList) {
-            result.add(wechatPayAccounting.toAccountingData());
+        for (AliPayAccounting aliPayAccounting : cachedDataList) {
+            result.add(aliPayAccounting.toAccountingData());
         }
 
-        for (AliPayAccounting aliPayAccounting : cachedDataLis2t) {
-            result.add(aliPayAccounting.toAccountingData());
+        for (WeChatPayAccounting weChatPayAccounting : cachedDataLis2t) {
+            result.add(weChatPayAccounting.toAccountingData());
         }
         return result;
     }
 
+    String outPath = "/Users/yuanzhushou/IdeaProjects/payment-statistics/out/";
+
     @Test
     public void test70() {
         System.out.println(SystemUtil.getUserInfo().getCurrentDir() + "simpleFill.xlsx");
-        String outPath = "/Users/yuanzhushou/IdeaProjects/payment-statistics/out";
     }
 
     @Test
@@ -60,7 +61,7 @@ public class OutExcelTest {
     public void test50() {
         List<AccountingData> data = data();
         System.out.println("insert size = " + data.size());
-        FastExcel.write(SystemUtil.getUserInfo().getCurrentDir() + "simpleFill2.xlsx")
+        FastExcel.write(outPath + "simpleFill3.xlsx")
                 .withTemplate("/Users/yuanzhushou/Downloads/Duck_Muban.xlsx")
                 .sheet()
                 .doFill(data);

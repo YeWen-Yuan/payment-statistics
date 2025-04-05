@@ -7,9 +7,9 @@ import cn.idev.excel.read.listener.PageReadListener;
 import lombok.Cleanup;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.Test;
-import show.ywy.alipay.AliPayAccounting;
+import show.ywy.wechat.WeChatPayAccounting;
 import show.ywy.template.AccountingData;
-import show.ywy.wechat.WechatPayAccounting;
+import show.ywy.alipay.AliPayAccounting;
 import show.ywy.wechat.WechatPayReader;
 
 import java.io.FileInputStream;
@@ -32,19 +32,19 @@ public class ConvertTest {
         // 指定编码读取文档
         @Cleanup InputStreamReader reader = new InputStreamReader(new FileInputStream(pathname), "GBK");
         @Cleanup InputStream newInputStream = ReaderInputStream.builder().setCharset("UTF-8").setReader(reader).get();
-        List<WechatPayAccounting> cachedDataList = new ArrayList<>();
-        EasyExcel.read(newInputStream, WechatPayAccounting.class, new WechatPayReader(cachedDataList)).headRowNumber(5).numRows(21).doReadAll();
-        ArrayList<AliPayAccounting> cachedDataLis2t = new ArrayList<>();
-        FastExcel.read(pathNameVx, AliPayAccounting.class, new PageReadListener<AliPayAccounting>(cachedDataLis2t::addAll))
+        List<AliPayAccounting> cachedDataList = new ArrayList<>();
+        EasyExcel.read(newInputStream, AliPayAccounting.class, new WechatPayReader(cachedDataList)).headRowNumber(5).numRows(21).doReadAll();
+        ArrayList<WeChatPayAccounting> cachedDataLis2t = new ArrayList<>();
+        FastExcel.read(pathNameVx, WeChatPayAccounting.class, new PageReadListener<WeChatPayAccounting>(cachedDataLis2t::addAll))
                 .headRowNumber(17).sheet().doRead();
         List<AccountingData> result = new ArrayList<>();
 
-        for (WechatPayAccounting wechatPayAccounting : cachedDataList) {
-            result.add(wechatPayAccounting.toAccountingData());
+        for (AliPayAccounting aliPayAccounting : cachedDataList) {
+            result.add(aliPayAccounting.toAccountingData());
         }
 
-        for (AliPayAccounting aliPayAccounting : cachedDataLis2t) {
-            result.add(aliPayAccounting.toAccountingData());
+        for (WeChatPayAccounting weChatPayAccounting : cachedDataLis2t) {
+            result.add(weChatPayAccounting.toAccountingData());
         }
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }

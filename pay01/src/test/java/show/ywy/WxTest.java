@@ -4,7 +4,7 @@ import cn.idev.excel.EasyExcel;
 import cn.idev.excel.FastExcel;
 import cn.idev.excel.read.listener.PageReadListener;
 import org.junit.Test;
-import show.ywy.alipay.AliPayAccounting;
+import show.ywy.wechat.WeChatPayAccounting;
 import show.ywy.alipay.AlipayReader;
 
 import java.io.File;
@@ -20,8 +20,8 @@ public class WxTest {
     @Test
     public void test01() {
 
-        FastExcel.read(pathname, AliPayAccounting.class, new PageReadListener<AliPayAccounting>(dataList -> {
-            for (AliPayAccounting demoData : dataList) {
+        FastExcel.read(pathname, WeChatPayAccounting.class, new PageReadListener<WeChatPayAccounting>(dataList -> {
+            for (WeChatPayAccounting demoData : dataList) {
                 System.out.println(demoData);
             }
         })).headRowNumber(17).sheet().doRead();
@@ -29,8 +29,8 @@ public class WxTest {
 
     @Test
     public void test30() {
-        ArrayList<AliPayAccounting> cachedDataList = new ArrayList<>();
-        EasyExcel.read(new File(pathname), AliPayAccounting.class, new AlipayReader(cachedDataList)).headRowNumber(16)
+        ArrayList<WeChatPayAccounting> cachedDataList = new ArrayList<>();
+        EasyExcel.read(new File(pathname), WeChatPayAccounting.class, new AlipayReader(cachedDataList)).headRowNumber(16)
                 .doReadAll();
         System.out.println(cachedDataList);
     }
